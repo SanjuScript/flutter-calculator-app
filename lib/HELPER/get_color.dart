@@ -1,13 +1,19 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-Color getColor(String buttonText) {
-    if (['+', '-', 'x', 'DEL'].contains(buttonText)) {
-      return const Color.fromARGB(255, 223, 156, 47);
-    } else if (buttonText == '=') {
-      return const Color.fromARGB(255, 76, 196, 110);
-    } else if (buttonText == 'C') {
-      return const Color(0xffF3676B);
-    } else {
-      return const Color(0xff49A2F1);
-    }
-  }
+Color getColor({required String buttonText, required bool isDark,required BuildContext context}) {
+  final Map<String, Color> colors = {
+    '+': Theme.of(context).highlightColor,
+    '-': Theme.of(context).highlightColor,
+    'x': Theme.of(context).highlightColor,
+    'DEL': Theme.of(context).highlightColor,
+    '=': Theme.of(context).focusColor,
+    'C': Theme.of(context).hintColor,
+  };
+
+  final int opacityIndex = isDark ? 0 : 1;
+  final int opacity = [0, 255][opacityIndex];
+
+  return colors.containsKey(buttonText)
+      ? colors[buttonText]!.withOpacity(opacity / 255)
+      : Colors.blue.withOpacity(opacity / 255);
+}

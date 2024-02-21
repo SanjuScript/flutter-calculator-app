@@ -1,3 +1,4 @@
+import 'package:calculator_app/HELPER/font_name.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorButton extends StatelessWidget {
@@ -27,17 +28,18 @@ class CalculatorButton extends StatelessWidget {
                 BoxShadow(
                     color:color.withOpacity(.9),
                     spreadRadius: 2,
-                    offset: Offset(2, -2)),
+                    offset: const Offset(2, -2)),
                 BoxShadow(
                     color: color,
                     blurRadius: 8,
-                    offset: Offset(-2, 2))
+                    offset: const Offset(-2, 2))
               ]),
           child: Center(
             child: Text(
-              index != 0 ? '÷' : buttonText,
-              style: TextStyle(
-                color: Colors.white,
+             buttonText,
+              style:  TextStyle(
+                color: Theme.of(context).cardColor,
+                fontFamily: FontName.font2,
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),

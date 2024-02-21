@@ -13,43 +13,48 @@ class CalculatorState with ChangeNotifier {
   void onButtonTap(String buttonText) {
     try {
       if (buttonText == 'C') {
-        _userInput = '';
-        _answer = '';
-        _showUserInput = false;
+        clear();
       } else if (buttonText == '=') {
-        if (_userInput.isNotEmpty) {
-          equalPressed();
-          _showUserInput = true;
-        }
+        evaluate();
       } else if (buttonText == 'DEL') {
-        if (_userInput.isNotEmpty) {
-          _userInput = _userInput.substring(0, _userInput.length - 1);
-        }
+        deleteLastCharacter();
       } else {
-        _userInput += buttonText;
+        appendInput(buttonText);
       }
-
-      notifyListeners();
     } catch (e) {
       _answer = "Error";
+    } finally {
+      notifyListeners();
     }
   }
 
-  void equalPressed() {
-    String finaluserinput = _userInput;
-    finaluserinput = finaluserinput.replaceAll('x', '*');
-    Parser p = Parser();
-    Expression exp = p.parse(finaluserinput);
-    ContextModel cm = ContextModel();
-    double eval = exp.evaluate(EvaluationType.REAL, cm);
+  void clear() {
+    _userInput = '';
+    _answer = '';
+    _showUserInput = false;
+  }
 
-    // Check if the result is an integer (no decimal part)
-    if (eval % 1 == 0) {
-      _answer = eval.toInt().toString();
-    } else {
-      _answer = eval.toString();
+  void evaluate() {
+    if (_userInput.isNotEmpty) {
+      String finalUserInput = _userInput.replaceAll('x', '*');
+      final Parser p = Parser();
+      final Expression exp = p.parse(finalUserInput);
+      final ContextModel cm = ContextModel();
+      final double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+      // result formatting
+      _answer = eval.toStringAsFixed(eval.truncateToDouble() == eval ? 0 : 2);
+      _showUserInput = true;
     }
+  }
 
-    notifyListeners();
+  void deleteLastCharacter() {
+    if (_userInput.isNotEmpty) {
+      _userInput = _userInput.substring(0, _userInput.length - 1);
+    }
+  }
+
+  void appendInput(String input) {
+    _userInput += input;
   }
 }

@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: themeProvider.gettheme(),
         home: const CalculatorPage(),
         builder: (context, child) {
